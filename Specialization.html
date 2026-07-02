@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Specialization Certificates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    color: #121212;
+    font-family: "Outfit", sans-serif;
+    background-color: #e8f0fe;
+    overflow-x: hidden;
+  }
+
+  .container { max-width: 1440px; padding: 2rem; }
+  .spacer { width: 100%; height: 20vh; }
+
+  /* ── Main Layout ── */
+  .arch {
+    display: flex;
+    gap: 60px;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin-inline: auto;
+  }
+  .arch__left {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+  }
+  .arch__info {
+    max-width: 380px;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+  .arch__info .content { padding: 2rem 0; }
+  .arch__info .cert-number {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 8px;
+  }
+  .arch__info h2.header {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.08;
+    margin-bottom: 2px;
+  }
+  .arch__info p.desc {
+    color: rgba(18,18,18,0.65);
+    font-size: 16px;
+    letter-spacing: -0.3px;
+    margin-block: 8px 20px;
+    line-height: 1.55;
+  }
+  .arch__info .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 22px;
+  }
+  .arch__info .skills span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    background: rgba(18,18,18,0.055);
+    color: rgba(18,18,18,0.6);
+  }
+  .arch__info a.link {
+    text-decoration: none;
+    padding: 13px 20px;
+    color: #fff;
+    border-radius: 40px;
+    display: inline-flex;
+    gap: 8px;
+    width: fit-content;
+    align-items: center;
+    font-weight: 600;
+    font-size: 13.5px;
+    letter-spacing: 0.2px;
+    transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .arch__info a.link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.3s ease;
+  }
+  .arch__info a.link:hover::after { background: rgba(255,255,255,0.12); }
+  .arch__info a.link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .arch__info a.link svg {
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+    position: relative;
+    z-index: 1;
+  }
+  .arch__info a.link:hover svg { transform: translateX(3px); }
+  .arch__info a.link span { position: relative; z-index: 1; }
+
+  /* ── Right Column ── */
+  .arch__right {
+    flex-shrink: 1;
+    height: 100vh;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .arch__right .img-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 440px;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    will-change: clip-path, transform;
+  }
+
+  /* ── Card Inner ── */
+  .cert-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+  }
+  .cert-card img.card-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+  }
+  .cert-card .card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .cert-card .card-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cert-card .card-top {}
+  .cert-card .google-mark {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 24px;
+  }
+  .cert-card .g-letter {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .cert-card .g-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+  }
+  .cert-card .card-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 8px;
+  }
+  .cert-card .card-title {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.6px;
+    line-height: 1.12;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .cert-card .card-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .cert-card .card-issuer {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.4;
+  }
+  .cert-card .card-issuer strong {
+    display: block;
+    color: rgba(255,255,255,0.65);
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .cert-card .card-badge {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.12);
+    display: grid;
+    place-items: center;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.06);
+  }
+  .cert-card .card-line {
+    position: absolute;
+    bottom: 0;
+    left: 32px;
+    right: 32px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    z-index: 2;
+  }
+
+  /* ── Footer ── */
+  .footer-section {
+    text-align: center;
+    padding: 2rem 1rem 4rem;
+  }
+  .footer-section .verify-note {
+    font-size: 13px;
+    color: rgba(18,18,18,0.3);
+    letter-spacing: 0.3px;
+    margin-bottom: 24px;
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .footer-links a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.3s ease;
+  }
+  .footer-links a:hover::after { background: rgba(255,255,255,0.1); }
+  .footer-links a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  .footer-links a svg {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .footer-links a span {
+    position: relative;
+    z-index: 1;
+  }
+  .footer-links .link-github {
+    background: #24292e;
+    color: #fff;
+  }
+  .footer-links .link-linkedin {
+    background: #0A66C2;
+    color: #fff;
+  }
+  .footer-links .link-coursera {
+    background: rgba(18,18,18,0.07);
+    color: rgba(18,18,18,0.65);
+  }
+  .footer-links .link-coursera:hover {
+    background: rgba(18,18,18,0.12);
+    color: rgba(18,18,18,0.85);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) { .arch { gap: 30px; } }
+  @media (max-width: 768px) {
+    .arch { flex-direction: column; gap: 16px; }
+    .arch__left, .arch__right { display: contents; }
+    .arch__right { height: auto; max-width: 100%; }
+    .arch__right .img-wrapper {
+      position: static;
+      transform: none;
+      height: 300px;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    .arch__left .arch__info { height: auto; padding: 12px 0; }
+    .arch__info h2.header { font-size: 28px; }
+    .arch__info p.desc { font-size: 14px; }
+    .cert-card .card-content { padding: 24px; }
+    .cert-card .card-title { font-size: 22px; }
+    .footer-links { flex-direction: column; align-items: center; }
+    .footer-links a { width: 100%; max-width: 320px; justify-content: center; }
+  }
+  @media (max-width: 560px) {
+    .arch { gap: 6px; }
+    .container { padding: 10px; }
+    .arch__right .img-wrapper { border-radius: 14px; height: 240px; }
+    .arch__info h2.header { font-size: 24px; }
+    .arch__info .skills { gap: 5px; }
+    .arch__info .skills span { font-size: 10px; padding: 4px 10px; }
+    .cert-card .card-content { padding: 18px; }
+    .cert-card .card-title { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="spacer"></div>
+
+  <div class="arch">
+    <div class="arch__left">
+
+      <div class="arch__info">
+        <div class="content">
+          <div class="cert-number">Certificate 01 / 08</div>
+          <h2 class="header">Google Data Analytics</h2>
+          <p class="desc">Master the complete data analysis process — from asking the right questions to presenting insights with spreadsheets, SQL, R, and visualization.</p>
+          <div class="skills"><span>SQL</span><span>R Programming</span><span>Spreadsheets</span><span>Data Viz</span></div>
+          <a class="link" href="https://coursera.org/share/7c670cf646b8626aeab78ef8012e704a" target="_blank" rel="noopener" style="background-color:#4285F4">
+            <span>View Certificate</span>
+            <svg width="14" height="14" fill="none"><path d="M5 2.5 1 7l4 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="arch__info">
+        <div class="content">
+          <div class="cert-number">Certificate 02 / 08</div>
+          <h2 class="header">Advanced Data Analytics</h2>
+          <p class="desc">Go beyond basics with regression, machine learning, and statistical modeling. Build predictive models for complex business problems.</p>
+          <div class="skills"><span>Regression</span><span>Machine Learning</span><span>Statistics</span><span>Python</span></div>
+          <a class="link" href="https://coursera.org/share/4198b477285c05b96f8789f3a00c5442" target="_blank" rel="noopener" style="background-color:#1A73E8">
+            <span>View Certificate</span>
+            <svg width="14" height="14" fill="none"><path d="M5 2.5 1 7l4 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="arch__info">
+        <div class="content">
+          <div class="cert-number">Certificate 03 / 08</div>
+          <h2 class="header">Google AI</h2>
+          <p class="desc">Foundational AI and ML concepts, responsible AI practices, and leveraging Google's AI tools to solve real-world problems at scale.</p>
+          <div class="skills"><span>Machine Learning</span><span>Responsible AI</span><span>TensorFlow</span><span>BigQuery ML</span></div>
+          <a class="link" href="https://coursera.org/share/fc909e587058c6baa83fb947165dbbba" target="_blank" rel="noopener" style="background-color:#A142F4">
+            <span>View Certificate</span>
+            <svg width="14" height="14" fill="none"><path d="M5 2.5 1 7l4 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="arch__info">
+        <div class="content">
+          <div class="cert-number">Certificate 04 / 08</div>
+          <h2 class="header">Google Prompting Essentials</h2>
+          <p class="desc">Structured prompting for generative AI — chain-of-thought, few-shot, and role-based strategies to get accurate, useful responses.</p>
+          <div class="skills"><span>Gen AI</span><span>Chain-of-Thought</span><span>Few-Shot</span><span>Gemini</span></div>
+          <a class="link" href="https://coursera.org/share/9170d04b4b8c0055ef815b278a189106" target="_blank" rel="noopener" style="background-color:#00ACC1">
+            <span>View Certificate</span>
+            <svg width="14" height="14" fill="none"><path d="M5 2.5 1 7l4 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="arch__info">
+        <div class="content">
+          <div class="cert-number">Certificate 05 / 08</div>
+          <h2 class="header">Google Cybersecurity</h2>
+          <p class="desc">Hands-on network security, threat detection, incident response, and security tooling to protect organizational assets.</p>
+          <div class="skills"><span>Network Security</span><span>SIEM</span><span>Incident Response</span><span>Python</span></div>
+          <a class="link" href="https://coursera.org/share/98f49589010e0fd3f858ba5f66ba0dc1" target="_blank" rel="noopener" style="background-color:#0F9D58">
+            <span>View Certificate</span>
+            <svg width="14" height="14" fill="none"><path d="M5 2.5 1 7l4 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="arch__info">
+        <div class="content">
+          <div class="cert-number">Certificate 06 / 08</div>
+          <h2 class="header">Google Agile Essentials</h2>
+          <p class="desc">Agile methodologies, Scrum ceremonies, sprint planning, and continuous delivery — manage projects with flexibility.</p>
+          <div class="skills"><span>Scrum</span><span>Sprint Planning</span><span>Kanban</span><span>Continuous Delivery</span></div>
+          <a class="link" href="https://coursera.org/share/cf5d3057de52767513f80c393a90840b" target="_blank" rel="noopener" style="background-color:#FF6D00">
+            <span>View Certificate</span>
+            <svg width="14" height="14" fill="none"><path d="M5 2.5 1 7l4 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="arch__info">
+        <div class="content">
+          <div class="cert-number">Certificate 07 / 08</div>
+          <h2 class="header">Google IT Support</h2>
+          <p class="desc">Core IT competencies — troubleshooting, networking, operating systems, system administration, and technical support.</p>
+          <div class="skills"><span>Troubleshooting</span><span>Networking</span><span>Linux</span><span>Cloud</span></div>
+          <a class="link" href="https://coursera.org/share/67afa11ac24b460d80c1aea32a3f8975" target="_blank" rel="noopener" style="background-color:#DB4437">
+            <span>View Certificate</span>
+            <svg width="14" height="14" fill="none"><path d="M5 2.5 1 7l4 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="arch__info">
+        <div class="content">
+          <div class="cert-number">Certificate 08 / 08</div>
+          <h2 class="header">Google Project Management</h2>
+          <p class="desc">End-to-end project management — initiation, planning, execution, closure — using Agile and waterfall with real tools.</p>
+          <div class="skills"><span>Planning</span><span>Risk Management</span><span>Stakeholders</span><span>Agile & Waterfall</span></div>
+          <a class="link" href="https://coursera.org/share/aace507155bbcb16b85b05f00046cefc" target="_blank" rel="noopener" style="background-color:#E8A000">
+            <span>View Certificate</span>
+            <svg width="14" height="14" fill="none"><path d="M5 2.5 1 7l4 4.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="arch__right">
+
+      <!-- 1 — Data Analytics -->
+      <div class="img-wrapper" data-index="8">
+        <div class="cert-card">
+          <img class="card-bg" src="https://picsum.photos/seed/data-analytics-blue/800/900.jpg" alt="Data Analytics">
+          <div class="card-overlay" style="background: linear-gradient(180deg, rgba(8,24,58,0.55) 0%, rgba(20,50,100,0.85) 100%);"></div>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="google-mark">
+                <div class="g-letter" style="background:#4285F4;">G</div>
+                <div class="g-text">Google</div>
+              </div>
+              <div class="card-label">Professional Certificate</div>
+              <div class="card-title">Data Analytics</div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-issuer">Issued by<br><strong>Google via Coursera</strong></div>
+              <div class="card-badge">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+      <!-- 2 — Advanced Data Analytics -->
+      <div class="img-wrapper" data-index="7">
+        <div class="cert-card">
+          <img class="card-bg" src="https://picsum.photos/seed/advanced-data-deep/800/900.jpg" alt="Advanced Data Analytics">
+          <div class="card-overlay" style="background: linear-gradient(180deg, rgba(5,16,52,0.6) 0%, rgba(10,30,80,0.9) 100%);"></div>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="google-mark">
+                <div class="g-letter" style="background:#1A73E8;">G</div>
+                <div class="g-text">Google</div>
+              </div>
+              <div class="card-label">Professional Certificate</div>
+              <div class="card-title">Advanced Data Analytics</div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-issuer">Issued by<br><strong>Google via Coursera</strong></div>
+              <div class="card-badge">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+      <!-- 3 — Google AI -->
+      <div class="img-wrapper" data-index="6">
+        <div class="cert-card">
+          <img class="card-bg" src="https://picsum.photos/seed/ai-neural-purple/800/900.jpg" alt="Google AI">
+          <div class="card-overlay" style="background: linear-gradient(180deg, rgba(30,8,58,0.55) 0%, rgba(50,15,90,0.88) 100%);"></div>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="google-mark">
+                <div class="g-letter" style="background:#A142F4;">G</div>
+                <div class="g-text">Google</div>
+              </div>
+              <div class="card-label">Professional Certificate</div>
+              <div class="card-title">Artificial Intelligence</div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-issuer">Issued by<br><strong>Google via Coursera</strong></div>
+              <div class="card-badge">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+      <!-- 4 — Prompting Essentials -->
+      <div class="img-wrapper" data-index="5">
+        <div class="cert-card">
+          <img class="card-bg" src="https://picsum.photos/seed/prompting-teal-chat/800/900.jpg" alt="Prompting Essentials">
+          <div class="card-overlay" style="background: linear-gradient(180deg, rgba(5,35,40,0.55) 0%, rgba(8,55,62,0.88) 100%);"></div>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="google-mark">
+                <div class="g-letter" style="background:#00ACC1;">G</div>
+                <div class="g-text">Google</div>
+              </div>
+              <div class="card-label">Professional Certificate</div>
+              <div class="card-title">Prompting Essentials</div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-issuer">Issued by<br><strong>Google via Coursera</strong></div>
+              <div class="card-badge">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+      <!-- 5 — Cybersecurity -->
+      <div class="img-wrapper" data-index="4">
+        <div class="cert-card">
+          <img class="card-bg" src="https://picsum.photos/seed/cybersecurity-green/800/900.jpg" alt="Cybersecurity">
+          <div class="card-overlay" style="background: linear-gradient(180deg, rgba(5,30,16,0.55) 0%, rgba(10,50,28,0.88) 100%);"></div>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="google-mark">
+                <div class="g-letter" style="background:#0F9D58;">G</div>
+                <div class="g-text">Google</div>
+              </div>
+              <div class="card-label">Professional Certificate</div>
+              <div class="card-title">Cybersecurity</div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-issuer">Issued by<br><strong>Google via Coursera</strong></div>
+              <div class="card-badge">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+      <!-- 6 — Agile Essentials -->
+      <div class="img-wrapper" data-index="3">
+        <div class="cert-card">
+          <img class="card-bg" src="https://picsum.photos/seed/agile-sprint-orange/800/900.jpg" alt="Agile Essentials">
+          <div class="card-overlay" style="background: linear-gradient(180deg, rgba(50,25,5,0.55) 0%, rgba(80,40,8,0.88) 100%);"></div>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="google-mark">
+                <div class="g-letter" style="background:#FF6D00;">G</div>
+                <div class="g-text">Google</div>
+              </div>
+              <div class="card-label">Professional Certificate</div>
+              <div class="card-title">Agile Essentials</div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-issuer">Issued by<br><strong>Google via Coursera</strong></div>
+              <div class="card-badge">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+      <!-- 7 — IT Support -->
+      <div class="img-wrapper" data-index="2">
+        <div class="cert-card">
+          <img class="card-bg" src="https://picsum.photos/seed/it-support-server/800/900.jpg" alt="IT Support">
+          <div class="card-overlay" style="background: linear-gradient(180deg, rgba(50,8,8,0.55) 0%, rgba(80,12,12,0.88) 100%);"></div>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="google-mark">
+                <div class="g-letter" style="background:#DB4437;">G</div>
+                <div class="g-text">Google</div>
+              </div>
+              <div class="card-label">Professional Certificate</div>
+              <div class="card-title">IT Support</div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-issuer">Issued by<br><strong>Google via Coursera</strong></div>
+              <div class="card-badge">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+      <!-- 8 — Project Management -->
+      <div class="img-wrapper" data-index="1">
+        <div class="cert-card">
+          <img class="card-bg" src="https://picsum.photos/seed/project-mgmt-amber/800/900.jpg" alt="Project Management">
+          <div class="card-overlay" style="background: linear-gradient(180deg, rgba(50,38,5,0.55) 0%, rgba(75,58,8,0.88) 100%);"></div>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="google-mark">
+                <div class="g-letter" style="background:#E8A000;">G</div>
+                <div class="g-text">Google</div>
+              </div>
+              <div class="card-label">Professional Certificate</div>
+              <div class="card-title">Project Management</div>
+            </div>
+            <div class="card-bottom">
+              <div class="card-issuer">Issued by<br><strong>Google via Coursera</strong></div>
+              <div class="card-badge">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Footer with social links -->
+  <div class="footer-section">
+    <p class="verify-note">All certificates are verifiable on Coursera.</p>
+    <div class="footer-links">
+      <a class="link-github" href="https://github.com/the-lazyguy" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.164 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10Z" fill="currentColor"/></svg>
+        <span>GitHub</span>
+      </a>
+      <a class="link-linkedin" href="https://www.linkedin.com/in/zain-nadeem-917524177/" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065Zm1.782 13.019H3.555V9h3.564v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003Z" fill="currentColor"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a class="link-coursera" href="https://www.coursera.org" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9Z" fill="currentColor"/></svg>
+        <span>Verify on Coursera</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Lenis smooth scroll ── */
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smooth: true,
+  gestureDirection: "vertical",
+  smoothTouch: true,
+  touchMultiplier: 2
+});
+
+function raf(time) {
+  lenis.raf(time);
+  ScrollTrigger.update();
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+/* ── Z-index stacking ── */
+document.querySelectorAll(".arch__right .img-wrapper").forEach((el) => {
+  const i = el.getAttribute("data-index");
+  if (i !== null) el.style.zIndex = i;
+});
+
+/* ── Mobile interleave ── */
+function handleMobileLayout() {
+  const m = window.matchMedia("(max-width: 768px)").matches;
+  const L = gsap.utils.toArray(".arch__left .arch__info");
+  const R = gsap.utils.toArray(".arch__right .img-wrapper");
+  if (m) {
+    L.forEach((el, i) => { el.style.order = i * 2; });
+    R.forEach((el, i) => { el.style.order = i * 2 + 1; });
+  } else {
+    L.forEach((el) => { el.style.order = ""; });
+    R.forEach((el) => { el.style.order = ""; });
+  }
+}
+let rt;
+window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(handleMobileLayout, 100); });
+handleMobileLayout();
+
+/* ── References ── */
+const wrappers = gsap.utils.toArray(".arch__right .img-wrapper");
+const bgImages  = gsap.utils.toArray(".card-bg");
+const bgColors  = [
+  "#e8f0fe", "#dce8fd", "#ede7f6", "#e0f7fa",
+  "#e8f5e9", "#fff3e0", "#fce4ec", "#fff8e1"
+];
+
+const easeSmooth = "power3.inOut";
+const easeLinear = "none";
+
+ScrollTrigger.matchMedia({
+
+  /* ════════════ DESKTOP ════════════ */
+  "(min-width: 769px)": function () {
+
+    gsap.set(wrappers, { clipPath: "inset(0% 0% 0% 0%)" });
+    gsap.set(bgImages, { scale: 1, y: "0%" });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".arch",
+        start: "top top",
+        end: "bottom bottom",
+        pin: ".arch__right",
+        scrub: 0.6,
+        invalidateOnRefresh: true
+      }
+    });
+
+    wrappers.forEach((wrap, i) => {
+      const nextWrap = wrappers[i + 1];
+      if (!nextWrap) return;
+
+      const st = gsap.timeline();
+
+      // Outgoing: wipe up + zoom out + drift down
+      st.to(wrap, {
+        clipPath: "inset(0% 0% 100% 0%)",
+        duration: 1.8,
+        ease: easeSmooth
+      }, 0)
+      .to(bgImages[i], {
+        scale: 1.08,
+        y: "8%",
+        duration: 1.8,
+        ease: easeLinear
+      }, 0);
+
+      // Incoming: settle from close-up + drift up
+      st.fromTo(bgImages[i + 1],
+        { scale: 1.06, y: "-4%" },
+        { scale: 1, y: "0%", duration: 1.8, ease: easeLinear }, 0
+      );
+
+      // Background color
+      st.to("body", {
+        backgroundColor: bgColors[i],
+        duration: 1.8,
+        ease: easeSmooth
+      }, 0);
+
+      tl.add(st);
+    });
+  },
+
+  /* ════════════ MOBILE ════════════ */
+  "(max-width: 768px)": function () {
+
+    gsap.set(bgImages, { scale: 1 });
+
+    wrappers.forEach((wrap, i) => {
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: wrap,
+          start: "top-=60% top+=40%",
+          end: "bottom+=150% bottom",
+          scrub: 0.5
+        }
+      })
+      .to(bgImages[i], {
+        scale: 1.1,
+        y: "-6%",
+        duration: 4,
+        ease: easeLinear
+      }, 0)
+      .to("body", {
+        backgroundColor: bgColors[i],
+        duration: 1.5,
+        ease: easeSmooth
+      }, 0);
+    });
+  }
+});
+</script>
+
+</body>
+</html>
