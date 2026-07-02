@@ -97,22 +97,3 @@ This animation is great for:
 * Agency websites
 * Interactive storytelling layouts
 * Modern landing pages
-
-## Learning Goals
-
-This project is useful if you want to practice:
-
-* GSAP basics
-* ScrollTrigger pinning
-* Scroll-linked animations
-* Reveal / masking effects
-* Building immersive front-end UI interactions
-
-## Credits
-
-Original animation inspiration from the CodePen demo:
-**GSAP pinned image mask reveal on scroll**
-
-## License
-
-This project is open-source and available under the **MIT License**.
