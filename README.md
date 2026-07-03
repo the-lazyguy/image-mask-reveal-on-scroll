@@ -1,20 +1,25 @@
-# GSAP Pinned Image Mask Reveal on Scroll
+# GSAP Image Mask Reveal on Scroll
 
-A smooth **scroll-driven image reveal animation** built with **GSAP** and **ScrollTrigger**.
-This project creates a cinematic section where an image stays pinned while a mask/reveal effect animates as the user scrolls.
+A smooth **scroll-driven image mask reveal animation** built with **GSAP** and **ScrollTrigger**. This project creates a cinematic pinned section where the image is progressively revealed as the user scrolls, producing a modern landing-page style interaction.
 
 ## Preview
 
-Inspired by the CodePen demo: **GSAP pinned image mask reveal on scroll**
+### Screenshot 1
+
+![Preview 1](./1.png)
+
+### Screenshot 2
+
+![Preview 2](./2.png)
 
 ## Features
 
 * Scroll-based image reveal effect
-* Pinned section using **GSAP ScrollTrigger**
-* Smooth masking / transition animation
-* Modern immersive landing-page style interaction
+* Pinned section powered by **GSAP ScrollTrigger**
+* Smooth mask / reveal animation
+* Immersive modern landing-page interaction
 * Lightweight front-end implementation
-* Easy to customize for portfolios, product pages, or creative websites
+* Easy to customize for portfolios, product pages, and creative websites
 
 ## Built With
 
@@ -26,26 +31,27 @@ Inspired by the CodePen demo: **GSAP pinned image mask reveal on scroll**
 
 ## How It Works
 
-The animation uses **GSAP ScrollTrigger** to:
+This animation uses **GSAP ScrollTrigger** to:
 
-1. **Pin** a section while the user scrolls
-2. Animate an **image mask / clip / reveal effect**
-3. Synchronize the animation progress with the page scroll
+1. Pin a section while the user scrolls
+2. Animate the image mask / reveal effect
+3. Sync the animation progress with the page scroll
 4. Create a smooth storytelling-style visual experience
 
-This kind of effect is commonly used in:
+This type of effect is commonly used in:
 
-* portfolio websites
-* product showcases
-* agency landing pages
-* creative hero sections
+* Portfolio websites
+* Product showcase pages
+* Agency landing pages
+* Creative hero sections
+* Interactive storytelling layouts
 
 ## Getting Started
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/the-lazyguy/image-mask-reveal-on-scroll.git
 ```
 
 ### 2. Open the project
@@ -54,20 +60,21 @@ Open the project folder in **VS Code** or any code editor.
 
 ### 3. Run locally
 
-You can simply open `index.html` in your browser, or use a local development server such as **Live Server** for better results.
+You can simply open the HTML file in your browser, or use a local development server like **Live Server** for a better development experience.
 
 ## Project Structure
 
 ```bash
-├── index.html
-├── style.css
-├── script.js
+image-mask-reveal-on-scroll/
+├── Specialization.html
+├── 1.png
+├── 2.png
 └── README.md
 ```
 
 ## GSAP Setup
 
-Make sure GSAP and ScrollTrigger are included in your project.
+Make sure **GSAP** and **ScrollTrigger** are included in your project.
 
 Example CDN setup:
 
@@ -80,20 +87,21 @@ Example CDN setup:
 
 You can easily modify:
 
-* **Image size and positioning**
-* **Mask reveal speed**
-* **Scroll distance**
-* **Pin duration**
-* **Section height / layout**
-* **Animation easing**
-* **Responsive behavior**
+* Image size and positioning
+* Mask reveal speed
+* Scroll distance
+* Pin duration
+* Section layout and spacing
+* Animation easing
+* Responsive behavior
 
 ## Use Cases
 
-This animation is great for:
+This animation works well for:
 
 * Portfolio hero sections
 * Product presentation pages
 * Agency websites
-* Interactive storytelling layouts
-* Modern landing pages
+* Interactive storytelling sections
+* Premium landing pages
+
